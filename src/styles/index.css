@@ -12,8 +12,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #FFFFFF;
-  color: #2C3E50;
+  background-color: #f5f7fb;
+  color: #1f2a37;
 }
 
 #root {
@@ -31,4 +31,119 @@ button {
 
 button:focus {
   outline: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.ui-toolbar {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.ui-button {
+  appearance: none;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.ui-button-primary {
+  background: #e67e22;
+  color: #fff;
+}
+
+.ui-button-primary:hover:not(:disabled) {
+  background: #d96c0f;
+}
+
+.ui-button-primary:disabled {
+  background: #f2c79d;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.ui-button-secondary {
+  background: #fff;
+  border-color: #d5deea;
+  color: #35506b;
+}
+
+.ui-button-secondary:hover:not(:disabled) {
+  background: #f7faff;
+  border-color: #aac1dd;
+}
+
+.ui-panel {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #dfe6ef;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(31, 42, 55, 0.06);
+}
+
+.ui-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.ui-panel-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2a37;
+}
+
+.ui-panel-subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #5f6f82;
+}
+
+.ui-notice {
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid #f1d39a;
+  background: linear-gradient(135deg, #fff8e8 0%, #fff2d7 100%);
+  color: #8a5a14;
+  text-align: left;
+  box-shadow: 0 8px 24px rgba(230, 126, 34, 0.12);
+}
+
+.ui-notice-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #b26a08;
+}
+
+.ui-notice-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .ui-toolbar {
+    gap: 10px;
+  }
+
+  .ui-button {
+    width: 100%;
+    justify-content: center;
+  }
 }

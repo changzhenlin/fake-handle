@@ -43,18 +43,18 @@ const pinyinContainerStyle: React.CSSProperties = {
 };
 
 const toneStyle: React.CSSProperties = {
-  fontSize: '48px',
-  height: '24px',
-  lineHeight: '24px',
+  fontSize: '28px',
+  height: '12px',
+  lineHeight: '12px',
   fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
   fontWeight: 'bold',
-  marginBottom: '-12px'
+  marginBottom: '-18px'
 };
 
 const pinyinRowStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
-  fontSize: '11px',
+  fontSize: '20px',
   fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
   letterSpacing: '0.5px'
 };

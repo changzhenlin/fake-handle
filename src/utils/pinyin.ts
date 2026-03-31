@@ -11,15 +11,6 @@ const initials = [
 
 const specialFinals = ['er'];
 
-const finals = [
-  'a', 'o', 'e', 'i', 'u', 'ü',
-  'ai', 'ei', 'ao', 'ou',
-  'an', 'en', 'ang', 'eng', 'ong',
-  'ia', 'ie', 'iao', 'iou', 'ian', 'in', 'iang', 'ing', 'iong',
-  'ua', 'uo', 'uai', 'uei', 'uan', 'un', 'uang',
-  'üe', 'üan', 'ün'
-];
-
 function removeTone(pinyinStr: string): string {
   const toneMap: { [key: string]: string } = {
     'ā': 'a', 'á': 'a', 'ǎ': 'a', 'à': 'a',

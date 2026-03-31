@@ -1,10 +1,17 @@
 import React from 'react';
 
+interface GameStats {
+  time: string;
+  hintsUsed: number;
+  attempts: number;
+}
+
 interface GameModalProps {
   isOpen: boolean;
   isWin: boolean;
   answer: string;
   onPlayAgain: () => void;
+  gameStats: GameStats;
 }
 
 const overlayStyle: React.CSSProperties = {
@@ -58,7 +65,22 @@ const buttonStyle: React.CSSProperties = {
   fontFamily: '-apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif'
 };
 
-export function GameModal({ isOpen, isWin, answer, onPlayAgain }: GameModalProps) {
+const statsContainerStyle: React.CSSProperties = {
+  marginBottom: '24px',
+  padding: '16px',
+  backgroundColor: '#F8F9FA',
+  borderRadius: '8px',
+  textAlign: 'left'
+};
+
+const statItemStyle: React.CSSProperties = {
+  marginBottom: '8px',
+  fontSize: '14px',
+  color: '#555555',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif'
+};
+
+export function GameModal({ isOpen, isWin, answer, onPlayAgain, gameStats }: GameModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -70,6 +92,12 @@ export function GameModal({ isOpen, isWin, answer, onPlayAgain }: GameModalProps
         
         <div style={answerStyle}>
           {answer}
+        </div>
+        
+        <div style={statsContainerStyle}>
+          <div style={statItemStyle}>⏱️ 用时：{gameStats.time}</div>
+          <div style={statItemStyle}>💡 提示次数：{gameStats.hintsUsed}次</div>
+          <div style={statItemStyle}>🔄 尝试次数：{gameStats.attempts}次</div>
         </div>
         
         <button

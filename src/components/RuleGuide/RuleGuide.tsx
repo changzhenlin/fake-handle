@@ -21,9 +21,9 @@ const cellContainerStyle: React.CSSProperties = {
   justifyContent: 'center',
   width: '48px',
   height: '56px',
-  borderRadius: '6px',
-  backgroundColor: '#F8F9FA',
-  border: '1px solid #E8E8E8'
+  borderRadius: '12px',
+  backgroundColor: '#f8fafc',
+  border: '1px solid #dfe6ef'
 };
 
 const pinyinStyle: React.CSSProperties = {
@@ -70,10 +70,11 @@ interface ExampleCardProps {
 }
 
 const cardStyle: React.CSSProperties = {
-  backgroundColor: '#F8F9FA',
-  borderRadius: '12px',
+  backgroundColor: '#f8fafc',
+  border: '1px solid #e1e8f0',
+  borderRadius: '16px',
   padding: '16px',
-  marginBottom: '16px'
+  marginBottom: '14px'
 };
 
 const cellsRowStyle: React.CSSProperties = {
@@ -85,7 +86,7 @@ const cellsRowStyle: React.CSSProperties = {
 
 const descStyle: React.CSSProperties = {
   fontSize: '13px',
-  color: '#2C3E50',
+  color: '#3e5268',
   lineHeight: '1.6',
   textAlign: 'left',
   margin: 0,
@@ -112,17 +113,8 @@ export function ExampleCard({ chars, pinyins, results, description, showDetail =
 }
 
 const containerStyle: React.CSSProperties = {
-  maxWidth: '600px',
-  margin: '0 auto 30px',
-  padding: '0 20px'
-};
-
-const sectionTitleStyle: React.CSSProperties = {
-  fontSize: '18px',
-  fontWeight: 'bold',
-  color: '#2C3E50',
-  marginBottom: '16px',
-  fontFamily: '-apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif'
+  margin: '0 0 24px',
+  padding: '18px'
 };
 
 export function RuleGuide() {
@@ -155,8 +147,15 @@ export function RuleGuide() {
   ];
 
   return (
-    <div style={containerStyle}>
-      <h2 style={sectionTitleStyle}>游戏规则</h2>
+    <section className="ui-panel" style={containerStyle}>
+      <div className="ui-panel-header">
+        <div>
+          <h2 className="ui-panel-title">游戏规则</h2>
+          <p className="ui-panel-subtitle">
+            颜色反馈会分别作用在汉字、声母、韵母和声调上，下面的例子和提示区采用同一套信息面板样式，阅读路径更一致。
+          </p>
+        </div>
+      </div>
       
       <ExampleCard
         chars={['班', '门', '弄', '斧']}
@@ -186,6 +185,6 @@ export function RuleGuide() {
         results={winResults}
         description="当四个格子都为青色时，你便赢得了游戏！"
       />
-    </div>
+    </section>
   );
 }

@@ -30,6 +30,15 @@ export interface GameState {
   guesses: Guess[];
   remainingChances: number;
   gameStatus: 'playing' | 'won' | 'lost';
+  hintsUsed: number;
+  hintsRemaining: number;
+  startTime: number;
+  endTime: number | null;
+  hints: {
+    type: 'pinyin' | 'position' | 'character';
+    content: string;
+    position: number;
+  }[];
 }
 
 export interface ExampleData {
