@@ -29,7 +29,7 @@ const subtitleStyle: React.CSSProperties = {
 export function Header() {
   return (
     <header style={headerStyle}>
-      <h1 style={titleStyle}>猜四字成语-仿antfu</h1>
+      <h1 style={titleStyle}>猜四字成语</h1>
       <p style={subtitleStyle}>
         你有十次的机会猜一个四字成语。每次猜测后，汉字与拼音的颜色将会标识其与正确答案的区别。
       </p>

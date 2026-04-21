@@ -1,19 +1,39 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { GameState, Guess } from '../types';
 import { getRandomIdiom } from '../data/idioms';
 import { evaluateGuess, isWin, isValidIdiom } from '../utils/gameLogic';
 import { getPinyinParts } from '../utils/pinyin';
+import { fetchRandomIdiom, submitGameResult } from '../supabase/gameApi';
 
 const MAX_CHANCES = 10;
 const MAX_HINTS = 3;
 
 export function useGameState() {
-  const [gameState, setGameState] = useState<GameState>(() => initGame());
+  const [gameState, setGameState] = useState<GameState>(() => initFallbackGame());
+  const [isLoading, setIsLoading] = useState(true);
 
-  function initGame(): GameState {
-    const targetIdiom = getRandomIdiom();
+  useEffect(() => {
+    let cancelled = false;
+    async function loadRemoteIdiom() {
+      try {
+        const remoteIdiom = await fetchRandomIdiom();
+        if (!cancelled && remoteIdiom) {
+          setGameState(prev => ({
+            ...prev,
+            targetIdiom: remoteIdiom,
+          }));
+        }
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    }
+    loadRemoteIdiom();
+    return () => { cancelled = true; };
+  }, []);
+
+  function initFallbackGame(): GameState {
     return {
-      targetIdiom,
+      targetIdiom: getRandomIdiom(),
       guesses: [],
       remainingChances: MAX_CHANCES,
       gameStatus: 'playing',
@@ -82,26 +102,21 @@ export function useGameState() {
     let hintContent = '';
     let hintPosition = 0;
 
-    // 随机选择一个未被提示过的位置
     const usedPositions = gameState.hints.map(h => h.position);
     const availablePositions = [0, 1, 2, 3].filter(pos => !usedPositions.includes(pos));
     if (availablePositions.length === 0) {
-      // 如果所有位置都被提示过，随机选择一个
       hintPosition = Math.floor(Math.random() * 4);
     } else {
       hintPosition = availablePositions[Math.floor(Math.random() * availablePositions.length)];
     }
 
     if (hintsUsed === 0) {
-      // 第一次提示：拼音
       hintType = 'pinyin';
       hintContent = gameState.targetIdiom.pinyin[hintPosition];
     } else if (hintsUsed === 1) {
-      // 第二次提示：拼音所在的位置
       hintType = 'position';
       hintContent = `第${hintPosition + 1}个位置的拼音是：${gameState.targetIdiom.pinyin[hintPosition]}`;
     } else {
-      // 第三次提示：一个汉字
       hintType = 'character';
       hintContent = gameState.targetIdiom.text[hintPosition];
     }
@@ -123,14 +138,60 @@ export function useGameState() {
   }, [gameState]);
 
   const resetGame = useCallback(() => {
-    setGameState(initGame());
+    setIsLoading(true);
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const remoteIdiom = await fetchRandomIdiom();
+        if (!cancelled) {
+          setGameState({
+            targetIdiom: remoteIdiom || getRandomIdiom(),
+            guesses: [],
+            remainingChances: MAX_CHANCES,
+            gameStatus: 'playing',
+            hintsUsed: 0,
+            hintsRemaining: MAX_HINTS,
+            startTime: Date.now(),
+            endTime: null,
+            hints: []
+          });
+        }
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
   }, []);
+
+  const saveResult = useCallback(async (playerName: string): Promise<void> => {
+    if (gameState.gameStatus === 'playing' || !gameState.targetIdiom) return;
+
+    const durationMs = gameState.endTime && gameState.startTime
+      ? gameState.endTime - gameState.startTime
+      : null;
+
+    await submitGameResult({
+      playerName,
+      targetIdiom: gameState.targetIdiom.text,
+      guesses: gameState.guesses.map(g => ({
+        text: g.text,
+        result: g.result,
+      })),
+      result: gameState.gameStatus,
+      hintsUsed: gameState.hintsUsed,
+      durationMs,
+    });
+  }, [gameState]);
 
   return {
     gameState,
+    isLoading,
     submitGuess,
     getHint,
     resetGame,
+    saveResult,
     isValidIdiom
   };
 }
